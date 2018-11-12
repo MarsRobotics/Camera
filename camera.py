@@ -35,22 +35,3 @@ with PiCamera() as camera:
   finally:
     connection.close()
     server_socket.close()
-
-''' random extra things which we can use for testing, etc
-
-
-camera = PiCamera()
-
-camera.start_preview()
-sleep(10)
-camera.stop_preview()
-
-camera.start_preview() 
-camera.annotate_text = "Egg" #contributed by a Senior Sociology Major
-camera.start_recording('/home/pi/vid_example.h264')
-sleep(20)
-camera.stop_recording()
-camera.stop_preview()
-
-
-'''
