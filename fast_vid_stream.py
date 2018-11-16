@@ -2,8 +2,7 @@
 # stream rpi camera module video to port 12345
 #
 # Created 11.4.18 by Emily Peterson
-# Last Updated 11.4.18 XX.XX.XX 
-# Contributers: Emily Peterson, 
+# Last Updated 11.4.18 
 ###########################################
 
 ## to view the image:
