@@ -8,15 +8,17 @@ import struct
 import copy
 #This is Client (sends data)
 
-IP = '10.0.0.77'  #this is the source (laptop) to display feed
+IP = ''  #this is the source (laptop) to display feed
 PORT = 54321
+X = 64 #128#240
+Y = 96 #160 #320
 
 class ImageProc():
 
   def do_processing(self, img, bl=0, bh=225, gl=25, gh=100, rl=0, rh=25):
 
    # Image selection bounds
-    
+ 
     RED_LOW = rl
     RED_HIGH = rh 
     GREEN_LOW = gl
@@ -25,10 +27,10 @@ class ImageProc():
     BLUE_HIGH = bh
 
     target_pixel_count = 0
-    total_count = 240*320
+    total_count = X*Y
 
 
-    current_img = img.reshape((240, 320, 3))
+    current_img = img.reshape((X, Y, 3))
     modified_img = current_img #copy.deepcopy(current_img)
 
     #note: format is ordered BGR
@@ -77,11 +79,11 @@ if __name__ == "__main__":
             sleep(.1)
             
             #set cameraonfiguration
-            camera.resolution = (320, 240)
-            camera.framerate = 10
+            camera.resolution = (Y, X)
+            camera.framerate = 20
             
             #capture image
-            current_img = np.empty((240*320*3), dtype=np.uint8)
+            current_img = np.empty((X*Y*3), dtype=np.uint8)
             camera.capture(current_img, 'bgr')
 
             current_img = ip.do_processing(current_img)

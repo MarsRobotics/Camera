@@ -21,6 +21,8 @@ import copy
 
 ''' CONSTANTS '''
 PORT = 54321
+X = 64 #128#240
+Y = 96 #160 #320
 
 if __name__== "__main__":
 
@@ -58,7 +60,7 @@ if __name__== "__main__":
     frame = pickle.loads(frame_data)
     #print(len(frame)) #debug
 
-    frame = frame.reshape((240, 320, 3))
+    frame = frame.reshape((X, Y, 3))
 
     #print(frame) #debug
     cv2.imshow('ProcessedImage', frame)
