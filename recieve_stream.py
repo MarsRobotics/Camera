@@ -24,6 +24,50 @@ PORT = 54321
 X = 64 #128#240
 Y = 96 #160 #320
 
+class ImageProc():
+    def do_processing(self, img, bl=0, bh=225, gl=25, gh=100, rl=0, rh=25):
+
+    # Image selection bounds
+    
+        RED_LOW = rl
+        RED_HIGH = rh 
+        GREEN_LOW = gl
+        GREEN_HIGH = gh
+        BLUE_LOW = bl
+        BLUE_HIGH = bh
+
+        target_pixel_count = 0
+        total_count = X*Y
+
+
+        current_img = img.reshape((X, Y, 3))
+        modified_img = current_img #copy.deepcopy(current_img)
+
+        #note: format is ordered BGR
+        dim_i = -1
+        dim_j = -1
+        
+        #checks for pixels within specified range 
+        for dim1 in current_img:
+            dim_i+=1
+            for dim2 in dim1:
+                dim_j+=1
+                if (dim2[0] >= BLUE_LOW and dim2[0] <= BLUE_HIGH \
+                and dim2[1] >= GREEN_LOW and dim2[1] <= GREEN_HIGH \
+                and dim2[2] >= RED_LOW and dim2[2] <= RED_HIGH):
+                    target_pixel_count+=1
+                    modified_img[dim_i][dim_j] = [0, 255 ,0]
+            dim_j = -1 
+            
+        kernel = np.ones((3,3), np.uint8)
+        
+        #erode for 2 iterations
+        erosion = cv2.erode(modified_img, kernel, iterations = 2)
+        
+        #dilate once
+        dilation = cv2.dilate(erosion, kernel, iterations = 1)
+        return dilation
+
 if __name__== "__main__":
 
   #create socket   
@@ -38,6 +82,8 @@ if __name__== "__main__":
   data = b""
   payload_size = struct.calcsize(">L")
   print("payload_size:{}".format(len(data)))
+
+ # Iproc = ImageProc() #uncomment for processing server (laptop) side
    
   #continually process data and output to video feed 
   while True:
@@ -62,6 +108,7 @@ if __name__== "__main__":
 
     frame = frame.reshape((X, Y, 3))
 
+    #frame = Iproc.do_processing(frame) #uncomment for processing server (laptop) side
     #print(frame) #debug
     cv2.imshow('ProcessedImage', frame)
     cv2.waitKey(1)

@@ -19,18 +19,20 @@ class ImageProc():
 
    # Image selection bounds
  
-    RED_LOW = rl
-    RED_HIGH = rh 
-    GREEN_LOW = gl
-    GREEN_HIGH = gh
-    BLUE_LOW = bl
-    BLUE_HIGH = bh
+    RED_LOW = 60 #rl
+    RED_HIGH = 140 #rh 
+    GREEN_LOW = 100 #gl
+    GREEN_HIGH =255 #gh
+    BLUE_LOW = 0 #bl
+    BLUE_HIGH = 128 # bh
 
     target_pixel_count = 0
     total_count = X*Y
 
-
+   
     current_img = img.reshape((X, Y, 3))
+   
+    current_img = cv2.cvtColor(current_img, cv2.COLOR_BGR2HSV)
     modified_img = current_img #copy.deepcopy(current_img)
 
     #note: format is ordered BGR
@@ -46,7 +48,7 @@ class ImageProc():
           and dim2[1] >= GREEN_LOW and dim2[1] <= GREEN_HIGH \
           and dim2[2] >= RED_LOW and dim2[2] <= RED_HIGH):
             target_pixel_count+=1
-            modified_img[dim_i][dim_j] = [0, 255 ,0]
+            modified_img[dim_i][dim_j] = [250, 0 ,174]
       dim_j = -1 
     
     kernel = np.ones((3,3), np.uint8)
@@ -85,7 +87,8 @@ if __name__ == "__main__":
             #capture image
             current_img = np.empty((X*Y*3), dtype=np.uint8)
             camera.capture(current_img, 'bgr')
-
+		
+	    #comment out below line to process server (laptop) side
             current_img = ip.do_processing(current_img)
             
 
